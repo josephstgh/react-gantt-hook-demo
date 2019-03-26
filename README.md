@@ -1,13 +1,5 @@
 # react-gantt-hook-demo
 
-## Issue
-
-Height not rendering correctly even though set to 100% or 1000px
-
-![No Height](https://i.imgur.com/7O34Br7.png)
-
-![Source](https://i.imgur.com/cUl1uGA.png)
-
 --- 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
