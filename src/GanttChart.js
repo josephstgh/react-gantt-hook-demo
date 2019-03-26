@@ -3,7 +3,9 @@ import './custom.css';
 
 const GanttChart = () => {
     return (
-        <div id='gantt' />
+        <div className='container'>
+            <div id='gantt' />
+        </div>
     );
 };
 
