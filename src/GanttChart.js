@@ -1,12 +1,13 @@
 import React from 'react';
 import './custom.css';
 
-const GanttChart = () => {
+const GanttChart = React.memo(() => {
+    console.log('GanttChart rendered');
     return (
-        <div className='container'>
+        <div>
             <div id='gantt' />
         </div>
     );
-};
+});
 
 export default GanttChart;
