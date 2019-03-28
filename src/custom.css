@@ -1,3 +1,23 @@
+html, body {
+    height: 100%;
+}
+
+#toolbar {
+    height: 100px;
+}
+
+/* Does not work 
+#gantt-chart {
+    height: 100%;
+}
+*/
+
+/* Does not work also
 #gantt {
-    height: 500px;
+    height: 100%;
+}
+*/
+
+#gantt {
+    height: auto;
 }

@@ -35,10 +35,17 @@ const GanttTL = () => {
     return (
         <div>
             <GanttConfig zoomLevel={zoomLevel} />
-            <GanttToolbar 
-                onZoomChange={handleZoomLevelChange} 
-            />
+            <div id='toolbar'>
+                <GanttToolbar 
+                    onZoomChange={handleZoomLevelChange} 
+                />
+            </div>
+            {/** Does not work
+            <div id='gantt-chart'>
+                <GanttChart  />
+            </div> */}
             <GanttChart  />
+
         </div>
     );
 };

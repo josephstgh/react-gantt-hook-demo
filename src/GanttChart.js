@@ -4,9 +4,9 @@ import './custom.css';
 const GanttChart = React.memo(() => {
     console.log('GanttChart rendered');
     return (
-        <div>
+        <React.Fragment>
             <div id='gantt' />
-        </div>
+        </React.Fragment>
     );
 });
 
