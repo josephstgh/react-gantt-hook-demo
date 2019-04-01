@@ -40,12 +40,9 @@ const GanttTL = () => {
                     onZoomChange={handleZoomLevelChange} 
                 />
             </div>
-            {/** Does not work
-            <div id='gantt-chart'>
+            <div style={{width: '100%', height: '100%', position: 'absolute'}}>
                 <GanttChart  />
-            </div> */}
-            <GanttChart  />
-
+            </div>
         </div>
     );
 };
