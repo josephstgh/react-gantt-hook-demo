@@ -1,3 +1,7 @@
+body{
+	margin: unset;
+}
+
 #toolbar {
     height: 50px;
 }
