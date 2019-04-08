@@ -1,9 +1,7 @@
 import React from 'react';
 import { gantt } from 'dhtmlx-gantt';
 
-const GanttConfig = React.memo((props) => {
-    const { zoomLevel } = props;
-
+const GanttConfig = React.memo(({ zoomLevel }) => {
     const zoomLevelChange = (value) => {
         switch (value) {
           case 'hour':
@@ -34,7 +32,6 @@ const GanttConfig = React.memo((props) => {
 
     zoomLevelChange(zoomLevel);
     console.log('GanttConfig');
-    return '';
 });
 
 export default GanttConfig;

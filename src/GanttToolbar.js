@@ -2,8 +2,7 @@ import React from 'react';
 import { Button } from '@material-ui/core';
 import './custom.css';
 
-const GanttToolbar = React.memo((props) => {
-    const { onZoomChange } = props;
+const GanttToolbar = React.memo(({ onZoomChange }) => {
     console.log('GanttToolbar rendered');
     return (
         <React.Fragment>

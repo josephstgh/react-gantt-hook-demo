@@ -1,35 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { gantt } from 'dhtmlx-gantt';
-import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
-import data from './data';
+import GanttConfig from './GanttConfig';
 import GanttToolbar from './GanttToolbar';
 import GanttChart from './GanttChart';
+import data from './data';
+import { gantt } from 'dhtmlx-gantt';
+import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
 import './custom.css';
-import GanttConfig from './GanttConfig';
 
 const GanttTL = () => {
-    // If you want to run an effect and clean it up only once (on mount and unmount),
-    // you can pass an empty array ([]) as a second argument
-    useEffect(() => {
-        gantt.init('gantt');
-        gantt.parse(data);
-        // console.log('gantt in effect');
-    }, []);
-
-    const [zoomLevel, setZoomLevel] = useState('hour');
+    const [zoomLevel, setZoomLevel] = useState('day');
 
     const handleZoomLevelChange = (zoom) => {
         setZoomLevel(zoom);
     };
 
-    // This is called after React render to the DOM
-    // useEffect is run both after first render and after every update
+    // To re-render the chart when zoomLevel changes
     useEffect(() => {
-        // Only re-render chart if zoomLevel changes
         gantt.render();
-        // console.log(zoomLevel + ' in effect');
     }, [zoomLevel]);
-    // Specifying [zoomLevel] means that only trigger this if zoomLevel changes
+    
     console.log('GanttTL rendered');
     // Below is rendered to the DOM
     return (
@@ -40,8 +29,9 @@ const GanttTL = () => {
                     onZoomChange={handleZoomLevelChange} 
                 />
             </div>
+            
             <div style={{width: '100%', height: '100%', position: 'absolute'}}>
-                <GanttChart  />
+                <GanttChart data={data} />
             </div>
         </div>
     );
