@@ -20,6 +20,10 @@ const GanttChart = React.memo(({ data }) => {
         });
     }, delay);
 
+    useEffect(() => {
+        gantt.render();
+    });
+
     console.log('GanttChart rendered');
     return (
         <React.Fragment>
