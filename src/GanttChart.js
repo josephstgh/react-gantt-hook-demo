@@ -14,11 +14,11 @@ const GanttChart = React.memo(({ data }) => {
         gantt.parse(data);
     }, []);
 
-    useInterval(() => {
-        gantt.eachTask((task) => {
-            console.log(`${task.id}`);
-        });
-    }, delay);
+    // useInterval(() => {
+    //     gantt.eachTask((task) => {
+    //         console.log(`${task.id}`);
+    //     });
+    // }, delay);
 
     useEffect(() => {
         gantt.render();

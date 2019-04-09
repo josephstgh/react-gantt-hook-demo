@@ -33,10 +33,9 @@ const GanttTL = () => {
             return false;
         });
 
-        // Why when using either refreshData(), or render() will cause log
+        // Why when using render() will cause log
         // inside event to run two or more times
-        gantt.refreshData();
-        // gantt.render();
+        gantt.render();
 
     }, [zoomLevel, priority]);
     
