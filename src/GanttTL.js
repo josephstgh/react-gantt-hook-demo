@@ -3,7 +3,6 @@ import GanttToolbar from './GanttToolbar';
 import GanttChart from './GanttChart';
 import data from './data';
 import { gantt } from 'dhtmlx-gantt';
-import { useZoomLevel } from './GanttHook';
 import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
 import './custom.css';
 
@@ -20,13 +19,8 @@ class Event {
 }
 
 const GanttTL = () => {
-    const [zoomLevel, setZoomLevel] = useState('day');
     const [priority, setPriority] = useState('high');
-    
-    const handleZoomLevelChange = (zoom) => {
-        setZoomLevel(zoom);
-    };
-
+        
     const handlePriorityChange = (priority) => {
         setPriority(priority);
     };
@@ -45,13 +39,6 @@ const GanttTL = () => {
             priority: e.priority,
         });
     }
-
-    // To re-render the chart when zoomLevel changes
-    useEffect(() => {
-        useZoomLevel(zoomLevel);
-        gantt.render();
-
-    }, [zoomLevel]);
 
     useEffect(() => {
         console.log(`Current selected priority is ${priority}`);
@@ -79,7 +66,6 @@ const GanttTL = () => {
         <div>
             <div id='toolbar'>
                 <GanttToolbar 
-                    onZoomChange={handleZoomLevelChange} 
                     onPriorityChange={handlePriorityChange}
                     onAddEvent={handleAddEvent}
                 />

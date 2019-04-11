@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 
 // useInterval Hook sets up an interval and clears it after unmounting. 
@@ -24,7 +24,26 @@ const useInterval = (callback, delay) => {
     }, [delay]);
 };
 
+const useToggleZoom = (initialZoom) => {
+  const [zoomLevel, setZoomLevel] = useState(initialZoom);
+
+  console.log(zoomLevel);
+
+  const handleZoomChange = (zoom) => {
+    useZoomLevel(zoom);
+    setZoomLevel(zoom);
+    gantt.render();
+  };
+
+  useEffect(() => {
+    useZoomLevel(initialZoom);
+  }, []);
+
+  return [zoomLevel, handleZoomChange];
+}
+
 const useZoomLevel = (zoom) => {
+  
   switch (zoom) {
     case 'hour':
       gantt.config.scale_unit = 'day';
@@ -52,4 +71,4 @@ const useZoomLevel = (zoom) => {
   }
 };
 
-export { useInterval, useZoomLevel };
+export { useInterval, useToggleZoom };
