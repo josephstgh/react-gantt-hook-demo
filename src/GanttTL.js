@@ -19,12 +19,6 @@ class Event {
 }
 
 const GanttTL = () => {
-    const [priority, setPriority] = useState('high');
-        
-    const handlePriorityChange = (priority) => {
-        setPriority(priority);
-    };
-
     const handleAddEvent = () => {
         const e = new Event(gantt.getTaskCount() + 1, 'hello', '15-04-2019', 4, 'high');
 
@@ -39,26 +33,6 @@ const GanttTL = () => {
             priority: e.priority,
         });
     }
-
-    useEffect(() => {
-        console.log(`Current selected priority is ${priority}`);
-        
-        const id = gantt.attachEvent('onBeforeTaskDisplay', (id, task) => {
-            console.log(`${id} priority is ${task.priority}`);
-            if (task.priority === priority) {
-                return true;
-            }
-
-            return false;
-        });
-
-        gantt.refreshData();
-
-        // perform cleanup
-        return () => {
-            gantt.detachEvent(id);
-        }
-    }, [priority]);
     
     console.log('GanttTL rendered');
     // Below is rendered to the DOM
@@ -66,7 +40,6 @@ const GanttTL = () => {
         <div>
             <div id='toolbar'>
                 <GanttToolbar 
-                    onPriorityChange={handlePriorityChange}
                     onAddEvent={handleAddEvent}
                 />
             </div>

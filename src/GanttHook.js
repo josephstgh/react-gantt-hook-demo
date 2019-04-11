@@ -71,4 +71,34 @@ const useZoomLevel = (zoom) => {
   }
 };
 
-export { useInterval, useToggleZoom };
+const useTogglePriority = (initalPriority) => {
+  const [priority, setPriority] = useState(initalPriority);
+        
+  const handlePriorityChange = (priority) => {
+      setPriority(priority);
+  };
+
+  useEffect(() => {
+    console.log(`Current selected priority is ${priority}`);
+    
+    const id = gantt.attachEvent('onBeforeTaskDisplay', (id, task) => {
+        console.log(`${id} priority is ${task.priority}`);
+        if (task.priority === priority) {
+            return true;
+        }
+
+        return false;
+    });
+
+    gantt.refreshData();
+
+    // perform cleanup
+    return () => {
+        gantt.detachEvent(id);
+    }
+  }, [priority]);
+
+  return [priority, handlePriorityChange];
+};
+
+export { useInterval, useToggleZoom, useTogglePriority };

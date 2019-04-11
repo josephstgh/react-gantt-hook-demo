@@ -5,7 +5,7 @@ import './custom.css';
 
 const GanttChart = React.memo(({ data }) => {
     // Introduce delay state to allow dynamic change to the interval
-    const [delay] = useState(10000);
+    // const [delay] = useState(10000);
 
     // If you want to run an effect and clean it up only once (on mount and unmount),
     // you can pass an empty array ([]) as a second argument
