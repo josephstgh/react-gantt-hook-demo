@@ -19,6 +19,18 @@ class Event {
 }
 
 const GanttTL = () => {
+
+    const [display, setDisplay] = useState(true);
+    const [zoomLevel, setZoomLevel] = useState('day');
+
+    const handleToggleChart = () => {
+        setDisplay(!display);
+    }
+
+    const handleZoomChange = (zoom) => {
+        setZoomLevel(zoom);
+    }
+
     const handleAddEvent = () => {
         const e = new Event(gantt.getTaskCount() + 1, 'hello', '15-04-2019', 4, 'high');
 
@@ -41,10 +53,12 @@ const GanttTL = () => {
             <div id='toolbar'>
                 <GanttToolbar 
                     onAddEvent={handleAddEvent}
+                    onToggleChart={handleToggleChart}
+                    onZoomChange={handleZoomChange}
                 />
             </div>
             <div style={{width: '100%', height: '100%', position: 'absolute'}}>
-                <GanttChart data={data} />
+                <GanttChart data={data} display={display} zoomLevel={zoomLevel} />
             </div>
         </div>
     );

@@ -24,53 +24,6 @@ const useInterval = (callback, delay) => {
     }, [delay]);
 };
 
-const useToggleZoom = (initialZoom) => {
-  const [zoomLevel, setZoomLevel] = useState(initialZoom);
-
-  console.log(zoomLevel);
-
-  const handleZoomChange = (zoom) => {
-    useZoomLevel(zoom);
-    setZoomLevel(zoom);
-    gantt.render();
-  };
-
-  useEffect(() => {
-    useZoomLevel(initialZoom);
-  }, []);
-
-  return [zoomLevel, handleZoomChange];
-}
-
-const useZoomLevel = (zoom) => {
-  
-  switch (zoom) {
-    case 'hour':
-      gantt.config.scale_unit = 'day';
-      gantt.config.date_scale = '%d %M';
-      gantt.config.scale_height = 60;
-      gantt.config.min_column_width = 30;
-      gantt.config.subscales = [
-        {
-          unit: 'hour',
-          step: 1,
-          date: '%H',
-        },
-      ];
-      break;
-    case 'day':
-      gantt.config.scale_unit = 'day';
-      gantt.config.step = 1;
-      gantt.config.date_scale = '%d %M';
-      gantt.config.subscales = [];
-      gantt.config.scale_height = 60;
-      gantt.templates.date_scale = null;
-      gantt.config.min_column_width = 100;
-      break;
-    default: break;
-  }
-};
-
 const useTogglePriority = (initalPriority) => {
   const [priority, setPriority] = useState(initalPriority);
         
@@ -101,4 +54,4 @@ const useTogglePriority = (initalPriority) => {
   return [priority, handlePriorityChange];
 };
 
-export { useInterval, useToggleZoom, useTogglePriority };
+export { useInterval, useTogglePriority };

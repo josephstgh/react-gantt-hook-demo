@@ -1,18 +1,17 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { useToggleZoom, useTogglePriority } from './GanttHook';
+import { useTogglePriority } from './GanttHook';
 import './custom.css';
 
-const GanttToolbar = React.memo(({ onAddEvent }) => {
+const GanttToolbar = React.memo(({ onAddEvent, onToggleChart, onZoomChange }) => {
     console.log('GanttToolbar rendered');
-    const [, handleZoomChange] = useToggleZoom('day');
     const [, handlePriorityChange] = useTogglePriority('high');
 
     return (
         <React.Fragment>
         <div>
-            <Button onClick={() => handleZoomChange('hour')}>Hour</Button>
-            <Button onClick={() => handleZoomChange('day')}>Day</Button>
+            <Button onClick={() => onZoomChange('hour')}>Hour</Button>
+            <Button onClick={() => onZoomChange('day')}>Day</Button>
         </div>
         <div>
             <Button onClick={() => handlePriorityChange('high')}>high</Button>
@@ -21,6 +20,7 @@ const GanttToolbar = React.memo(({ onAddEvent }) => {
         </div>
         <div>
             <Button onClick={() => onAddEvent()}>Add</Button>
+            <Button onClick={() => onToggleChart()}>Show</Button>
         </div>
         </React.Fragment>
     );
