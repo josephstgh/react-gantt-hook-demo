@@ -57,8 +57,10 @@ const useTogglePriority = (initalPriority) => {
         gantt.detachEvent(id);
     }
   }, [priority]);
-
-  return [priority, handlePriorityChange];
+  
+  // Return as an object or can return as an array
+  // return [priority, handlePriorityChange]
+  return { priority, handlePriorityChange };
 };
 
 export { useInterval, useTogglePriority };
