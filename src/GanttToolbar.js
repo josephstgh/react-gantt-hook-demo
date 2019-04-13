@@ -5,7 +5,7 @@ import './custom.css';
 
 const GanttToolbar = React.memo(({ onAddEvent, onToggleChart, onZoomChange }) => {
     console.log('GanttToolbar rendered');
-    const [, handlePriorityChange] = useTogglePriority('high');
+    const [, handlePriorityChange] = useTogglePriority('all');
 
     return (
         <React.Fragment>
@@ -14,9 +14,10 @@ const GanttToolbar = React.memo(({ onAddEvent, onToggleChart, onZoomChange }) =>
             <Button onClick={() => onZoomChange('day')}>Day</Button>
         </div>
         <div>
-            <Button onClick={() => handlePriorityChange('high')}>high</Button>
-            <Button onClick={() => handlePriorityChange('normal')}>normal</Button>
-            <Button onClick={() => handlePriorityChange('low')}>low</Button>
+            <Button onClick={() => handlePriorityChange('all')}>All</Button>
+            <Button onClick={() => handlePriorityChange('high')}>High</Button>
+            <Button onClick={() => handlePriorityChange('normal')}>Normal</Button>
+            <Button onClick={() => handlePriorityChange('low')}>Low</Button>
         </div>
         <div>
             <Button onClick={() => onAddEvent()}>Add</Button>

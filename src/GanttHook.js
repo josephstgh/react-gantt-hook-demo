@@ -36,8 +36,15 @@ const useTogglePriority = (initalPriority) => {
     
     const id = gantt.attachEvent('onBeforeTaskDisplay', (id, task) => {
         console.log(`${id} priority is ${task.priority}`);
+
+        // Return all tasks if priority is all
+        if ('all' === priority) {
+          return true;
+        }
+
+        // Return only the task that matches the priority selected
         if (task.priority === priority) {
-            return true;
+          return true;
         }
 
         return false;

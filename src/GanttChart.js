@@ -1,38 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { gantt } from 'dhtmlx-gantt';
+import { setZoomConfig } from './zoom-level';
 import { useInterval } from './GanttHook';
 import './custom.css';
 
-const useZoomLevel = (zoom) => {
-  
-    switch (zoom) {
-      case 'hour':
-        gantt.config.scale_unit = 'day';
-        gantt.config.date_scale = '%d %M';
-        gantt.config.scale_height = 60;
-        gantt.config.min_column_width = 30;
-        gantt.config.subscales = [
-          {
-            unit: 'hour',
-            step: 1,
-            date: '%H',
-          },
-        ];
-        break;
-      case 'day':
-        gantt.config.scale_unit = 'day';
-        gantt.config.step = 1;
-        gantt.config.date_scale = '%d %M';
-        gantt.config.subscales = [];
-        gantt.config.scale_height = 60;
-        gantt.templates.date_scale = null;
-        gantt.config.min_column_width = 100;
-        break;
-      default: break;
-    }
-};
-
 const GanttChart = React.memo(({ data, display, zoomLevel }) => {
+
+    // let gContainer = useRef();
     // Introduce delay state to allow dynamic change to the interval
     // const [delay] = useState(10000);
 
@@ -43,21 +17,35 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
     // you can pass an empty array ([]) as a second argument
     useEffect(() => {
         gantt.config.show_chart = display;
-        gantt.config.duration_step = 15;
+        gantt.config.duration_step = 30; // Try switching between 15, 45 and 60
         gantt.config.duration_unit = 'minute';
-        gantt.config.time_step = 15; // Doesn't seem to work
+        // Not exactly sure what this affects
+        // gantt.config.time_step = 60;
         
         gantt.init('gantt');
         gantt.parse(data);
     }, []);
 
     useEffect(() => {
-        useZoomLevel(zoomLevel);
+      setZoomConfig(zoomLevel);
     }, [zoomLevel]);
     
     useEffect(() => {
         gantt.config.show_chart = display;
     }, [display]);
+
+    // To trigger a event when task if double clicked
+    // useEffect(() => {
+    //   const doubleClick = gantt.attachEvent('onTaskDblClick', (id, e) => {
+    //     window.alert(`hi doubleClick ${id} ${e}`);
+    //     // Push the view to Edit Event page view
+    //   });
+
+    //   // Clean-up the event
+    //   return () => {
+    //     gantt.detachEvent(doubleClick);
+    //   };
+    // });
 
     // useInterval(() => {
     //     gantt.eachTask((task) => {
@@ -65,6 +53,9 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
     //     });
     // }, delay);
 
+    // Trigger gantt to re-render only
+    // when state/props changes (React.memo)
+    // Keep it to the last Event
     useEffect(() => {
         gantt.render();
     });
@@ -72,7 +63,8 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
     console.log('GanttChart rendered');
     return (
         <React.Fragment>
-            <div id='gantt' />
+            {/* <div id='gantt' ref={(i) => gContainer = i} /> /> */}
+            <div id='gantt' /> />
         </React.Fragment>
     );
 });
