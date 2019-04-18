@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import { setZoomConfig } from './zoom-level';
-import { useInterval } from './GanttHook';
+import { useInterval, useFetchData } from './GanttHook';
 import './custom.css';
 
 const GanttChart = React.memo(({ data, display, zoomLevel }) => {
@@ -12,7 +12,7 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
 
     // Keep all the config in GanttChart so that any changes to props/state,
     // would then trigger a re-render of the component
-    
+
     // If you want to run an effect and clean it up only once (on mount and unmount),
     // you can pass an empty array ([]) as a second argument
     useEffect(() => {
@@ -21,7 +21,7 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
         gantt.config.duration_unit = 'minute';
         // Not exactly sure what this affects
         // gantt.config.time_step = 60;
-        
+
         gantt.init('gantt');
         gantt.parse(data);
     }, []);
@@ -29,7 +29,7 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
     useEffect(() => {
       setZoomConfig(zoomLevel);
     }, [zoomLevel]);
-    
+
     useEffect(() => {
         gantt.config.show_chart = display;
     }, [display]);

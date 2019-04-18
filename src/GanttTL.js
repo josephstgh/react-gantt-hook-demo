@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import GanttToolbar from './GanttToolbar';
 import GanttChart from './GanttChart';
 import data from './data';
 import { gantt } from 'dhtmlx-gantt';
+import { useFetchData } from './GanttHook';
 import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
 import './custom.css';
 
@@ -10,16 +11,30 @@ const GanttTL = () => {
 
     const [display, setDisplay] = useState(true);
     const [zoomLevel, setZoomLevel] = useState('hour');
+    const result = useFetchData('https://jsonplaceholder.typicode.com/users');
 
-    const handleToggleChart = () => {
+    // functions are re-initialize each time GanttTL component is rendered
+    // by default (w/o useCallback()), when handle* is passed on to its
+    // child component (GanttToolbar), it will cause GanttToolbar to re-render
+    // even if that component is wrapped with React.memo()
+
+    // on first load.. GanttTTL, Toolbar, Chart is rendered.
+    // useFetchData is then called which update the state
+    // and causes GanttTL to re-rendered which causes GanttToolbar
+    // to re-render (if not using useCallback())
+
+    // with useCallback(), only GanttTL component will be re-rendered
+    // but if the data is passed to GanttChart to display the chart
+    // it will then cause GanttChart to re-render due to props change
+    const handleToggleChart = useCallback(() => {
         setDisplay(!display);
-    }
+    }, [display]);
 
-    const handleZoomChange = (zoom) => {
+    const handleZoomChange = useCallback((zoom) => {
         setZoomLevel(zoom);
-    }
+    }, []);
 
-    const handleAddEvent = () => {
+    const handleAddEvent = useCallback(() => {
         gantt.addTask({
             id: gantt.getTaskCount() + 1,
             text: 'Event',
@@ -27,14 +42,24 @@ const GanttTL = () => {
             duration: 4,
             priority: 'high',
         });
-    }
-    
+    }, []);
+
+    useEffect(() => {
+        const event = gantt.attachEvent('onAfterTaskAdd', (id, task) => {
+            gantt.message(`${task.text} with ${id} is created`);
+        });
+
+        return () => {
+            gantt.detachEvent(event);
+        };
+    });
+
     console.log('GanttTL rendered');
     // Below is rendered to the DOM
     return (
         <div>
             <div id='toolbar'>
-                <GanttToolbar 
+                <GanttToolbar
                     onAddEvent={handleAddEvent}
                     onToggleChart={handleToggleChart}
                     onZoomChange={handleZoomChange}

@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 
-// useInterval Hook sets up an interval and clears it after unmounting. 
+// useInterval Hook sets up an interval and clears it after unmounting.
 // It’s a combo of setInterval and clearInterval tied to the component lifecycle.
 // See <a href="https://overreacted.io/making-setinterval-declarative-with-react-hooks/">useInterval Hook</a>
 const useInterval = (callback, delay) => {
     const savedCallback = useRef();
-  
+
     // Remember the latest callback.
     useEffect(() => {
       savedCallback.current = callback;
     }, [callback]);
-  
+
     // Set up the interval.
     useEffect(() => {
       function tick() {
@@ -26,14 +26,14 @@ const useInterval = (callback, delay) => {
 
 const useTogglePriority = (initalPriority) => {
   const [priority, setPriority] = useState(initalPriority);
-        
+
   const handlePriorityChange = (priority) => {
       setPriority(priority);
   };
 
   useEffect(() => {
     console.log(`Current selected priority is ${priority}`);
-    
+
     const id = gantt.attachEvent('onBeforeTaskDisplay', (id, task) => {
         console.log(`${id} priority is ${task.priority}`);
 
@@ -57,10 +57,34 @@ const useTogglePriority = (initalPriority) => {
         gantt.detachEvent(id);
     }
   }, [priority]);
-  
+
   // Return as an object or can return as an array
   // return [priority, handlePriorityChange]
   return { priority, handlePriorityChange };
 };
 
-export { useInterval, useTogglePriority };
+/**
+ * @param  {string} url
+ */
+const useFetchData = (url) => {
+  const [data, setData] = useState();
+
+  const fetchData = async (url) => {
+    try {
+      const res = await fetch(url);
+      const result = await res.json();
+      setData(result);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // Should only fetch onMount
+  useEffect(() => {
+    fetchData(url);
+  }, []);
+
+  return data;
+};
+
+export { useInterval, useTogglePriority, useFetchData };
