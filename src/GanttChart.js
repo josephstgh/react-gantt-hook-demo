@@ -14,6 +14,17 @@ import './custom.css';
 const GanttChart = React.memo(({ data, display, zoomLevel }) => {
   const markerId = useMarker();
 
+  const rightSideGridColumns = {
+		columns: [
+			{
+				name: "status", label: "Status", width: 30, align: "center", template: function (task) {
+					const progress = task.progress || 0;
+          return Math.floor(progress * 100) + "";
+				}
+			},
+		]
+	};
+
   // let gContainer = useRef();
   // Introduce delay state to allow dynamic change to the interval
   // const [delay] = useState(10000);
@@ -22,6 +33,24 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
   // you can pass an empty array ([]) as a second argument
   useEffect(() => {
     gantt.config.show_chart = display;
+    gantt.config.sort = true;
+
+    gantt.config.layout = {
+      css: "gantt_container",
+      rows: [
+        {
+          cols: [
+            {view: "grid", width: 320, scrollY: "scrollVer"},
+            {resizer: true, width: 1},
+            {view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
+            {resizer: true, width: 1},
+            {view: "grid", width: 50, bind: "task", scrollY: "scrollVer", config: rightSideGridColumns},
+            {view: "scrollbar", id: "scrollVer"}
+          ]
+        },
+        {view: "scrollbar", id: "scrollHor", height: 20}
+      ]
+    };
 
     // duration_step and duration_unit used for
     // the calculation for each task
