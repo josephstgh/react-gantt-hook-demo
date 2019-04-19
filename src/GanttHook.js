@@ -25,6 +25,9 @@ const useInterval = (callback, delay) => {
     }, [delay]);
 };
 
+/**
+ * @param  {string} initalPriority
+ */
 const useTogglePriority = (initalPriority) => {
   const [priority, setPriority] = useState(initalPriority);
 
@@ -35,7 +38,7 @@ const useTogglePriority = (initalPriority) => {
   useEffect(() => {
     console.log(`Current selected priority is ${priority}`);
 
-    const id = gantt.attachEvent('onBeforeTaskDisplay', (id, task) => {
+    const event = gantt.attachEvent('onBeforeTaskDisplay', (id, task) => {
         console.log(`${id} priority is ${task.priority}`);
 
         // Return all tasks if priority is all
@@ -55,7 +58,7 @@ const useTogglePriority = (initalPriority) => {
 
     // perform cleanup
     return () => {
-        gantt.detachEvent(id);
+        gantt.detachEvent(event);
     }
   }, [priority]);
 
@@ -76,7 +79,7 @@ const useFetchData = (url) => {
       const result = await res.json();
       setData(result);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 

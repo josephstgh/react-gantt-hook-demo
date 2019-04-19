@@ -14,6 +14,20 @@ const GanttTL = () => {
     const [zoomLevel, setZoomLevel] = useState('hour');
     const result = useFetchData('https://jsonplaceholder.typicode.com/users');
 
+    const handleZoomChange = useCallback((zoom) => {
+        setZoomLevel(zoom);
+    }, []);
+
+    const handleAddEvent = useCallback(() => {
+        gantt.addTask({
+            id: gantt.getTaskCount() + 1,
+            text: 'Event',
+            start_date: '15-04-2019',
+            duration: 4,
+            priority: 'high',
+        });
+    }, []);
+
     // functions are re-initialize each time GanttTL component is rendered
     // by default (w/o useCallback()), when handle* is passed on to its
     // child component (GanttToolbar), it will cause GanttToolbar to re-render
@@ -30,20 +44,6 @@ const GanttTL = () => {
     const handleToggleChart = useCallback(() => {
         setDisplay(!display);
     }, [display]);
-
-    const handleZoomChange = useCallback((zoom) => {
-        setZoomLevel(zoom);
-    }, []);
-
-    const handleAddEvent = useCallback(() => {
-        gantt.addTask({
-            id: gantt.getTaskCount() + 1,
-            text: 'Event',
-            start_date: '15-04-2019',
-            duration: 4,
-            priority: 'high',
-        });
-    }, []);
 
     useEffect(() => {
         const event = gantt.attachEvent('onAfterTaskAdd', (id, task) => {
