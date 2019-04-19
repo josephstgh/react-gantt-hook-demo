@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import { setZoomConfig } from './zoom-level';
-import { useInterval, useFetchData } from './GanttHook';
+import { useInterval, useFetchData, useMarker } from './GanttHook';
 import './custom.css';
 
 const GanttChart = React.memo(({ data, display, zoomLevel }) => {
+
+    const markerId = useMarker();
 
     // let gContainer = useRef();
     // Introduce delay state to allow dynamic change to the interval
@@ -33,6 +35,14 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
     useEffect(() => {
         gantt.config.show_chart = display;
     }, [display]);
+
+    useInterval(() => {
+        const newDate = new Date();
+        const currentMarker = gantt.getMarker(markerId);
+        currentMarker.start_date = newDate;
+        currentMarker.title = newDate;
+        gantt.updateMarker(markerId);
+    }, 1000);
 
     // To trigger a event when task if double clicked
     // useEffect(() => {

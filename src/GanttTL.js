@@ -3,8 +3,9 @@ import GanttToolbar from './GanttToolbar';
 import GanttChart from './GanttChart';
 import data from './data';
 import { gantt } from 'dhtmlx-gantt';
-import { useFetchData } from './GanttHook';
+import { useFetchData, useInterval } from './GanttHook';
 import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
+
 import './custom.css';
 
 const GanttTL = () => {

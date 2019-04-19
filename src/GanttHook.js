@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { gantt } from 'dhtmlx-gantt';
+import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_marker';
 
 // useInterval Hook sets up an interval and clears it after unmounting.
 // It’s a combo of setInterval and clearInterval tied to the component lifecycle.
@@ -87,4 +88,29 @@ const useFetchData = (url) => {
   return data;
 };
 
-export { useInterval, useTogglePriority, useFetchData };
+const useMarker = () => {
+  const [markerId, setMarkerId] = useState();
+
+  const initMarker = () => {
+    const id = gantt.addMarker({
+      start_date: new Date(),
+      css: "today",
+      text: "Now",
+      title: new Date()
+    });
+
+    return id;
+  };
+
+  useEffect(() => {
+    setMarkerId(initMarker());
+
+    return () => {
+      gantt.deleteMarker(markerId);
+    };
+  }, []);
+
+  return markerId;
+}
+
+export { useInterval, useTogglePriority, useFetchData, useMarker };
