@@ -3,7 +3,14 @@ import { gantt } from 'dhtmlx-gantt';
 import { setZoomConfig } from './zoom-level';
 import { useInterval, useFetchData, useMarker } from './GanttHook';
 import './custom.css';
-
+/**
+ * Keep all the config in GanttChart so that any changes to props/state,
+ * would then trigger a re-render of the component
+ *
+ * @param  {} data
+ * @param  {} display
+ * @param  {} zoomLevel
+ */
 const GanttChart = React.memo(({ data, display, zoomLevel }) => {
 
     const markerId = useMarker();
@@ -12,17 +19,24 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
     // Introduce delay state to allow dynamic change to the interval
     // const [delay] = useState(10000);
 
-    // Keep all the config in GanttChart so that any changes to props/state,
-    // would then trigger a re-render of the component
-
     // If you want to run an effect and clean it up only once (on mount and unmount),
     // you can pass an empty array ([]) as a second argument
     useEffect(() => {
         gantt.config.show_chart = display;
-        gantt.config.duration_step = 30; // Try switching between 15, 45 and 60
+
+        // duration_step and duration_unit used for
+        // the calculation for each task
+        // If a task duration is set to 3, then the
+        // task duration will be 1 hour and 30 min (30 minute per unit/duration)
+        gantt.config.duration_step = 30;
         gantt.config.duration_unit = 'minute';
-        // Not exactly sure what this affects
-        // gantt.config.time_step = 60;
+
+        // By default tasks snap to time scale cells on drag and drop,
+        // so time_step won’t affect d’n’d dates directly.
+        // To allow d'n'd to not be dependent on time scale,
+        // then set round_dnd_dates to false
+        // gantt.config.round_dnd_dates = false;
+        // gantt.config.time_step = 30;
 
         gantt.init('gantt');
         gantt.parse(data);
