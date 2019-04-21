@@ -5,7 +5,6 @@ import data from './data';
 import { gantt } from 'dhtmlx-gantt';
 import { useFetchData, useInterval } from './GanttHook';
 import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
-
 import './custom.css';
 
 const GanttTL = () => {
@@ -26,6 +25,16 @@ const GanttTL = () => {
       priority: 'high'
     });
   }, []);
+
+  const handleEarlyEvent = () => {
+    const task1 = gantt.getTask(1);
+    task1.original_start_date = task1.start_date;
+    task1.start_date = new Date(2019, 3, 16);
+    console.log(gantt.calculateDuration(task1.start_date, task1.original_start_date));
+    console.log(task1);
+    gantt.updateTask(task1.id);
+    gantt.render();
+  };
 
   // functions are re-initialize each time GanttTL component is rendered
   // by default (w/o useCallback()), when handle* is passed on to its
@@ -63,6 +72,7 @@ const GanttTL = () => {
           onAddEvent={handleAddEvent}
           onToggleChart={handleToggleChart}
           onZoomChange={handleZoomChange}
+          onEarlyEvent={handleEarlyEvent}
         />
       </div>
       <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
