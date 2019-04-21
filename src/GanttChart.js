@@ -23,7 +23,7 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
 				}
 			},
 		]
-	};
+  };
 
   // let gContainer = useRef();
   // Introduce delay state to allow dynamic change to the interval
@@ -50,6 +50,10 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
         },
         {view: "scrollbar", id: "scrollHor", height: 20}
       ]
+    };
+
+    gantt.templates.progress_text = function (start, end, task) {
+      return "<span style='text-align:left;'>" + Math.round(task.progress * 100) + "% </span>";
     };
 
     // duration_step and duration_unit used for
