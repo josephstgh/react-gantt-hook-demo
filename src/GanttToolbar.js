@@ -4,7 +4,7 @@ import { useTogglePriority } from './GanttHook';
 import './custom.css';
 
 const GanttToolbar = React.memo(
-  ({ onAddEvent, onToggleChart, onZoomChange, onEarlyEvent }) => {
+  ({ onAddEvent, onToggleChart, onZoomChange, onEarlyEvent, onDispatch }) => {
     console.log('GanttToolbar rendered');
 
     // Array destructuring
@@ -30,6 +30,7 @@ const GanttToolbar = React.memo(
           <Button onClick={() => onAddEvent()}>Add</Button>
           <Button onClick={() => onToggleChart()}>Show</Button>
           <Button onClick={() => onEarlyEvent()}>Early</Button>
+          <Button onClick={() => onDispatch()}>Switch Workspace</Button>
         </div>
       </React.Fragment>
     );

@@ -1,13 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import GanttToolbar from './GanttToolbar';
 import GanttChart from './GanttChart';
 import data from './data';
 import { gantt } from 'dhtmlx-gantt';
 import { useFetchData, useInterval } from './GanttHook';
+import { AppStoreContext } from './context/AppStoreContext';
 import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
 import './custom.css';
 
 const GanttTL = () => {
+  // Can use dispatch or actions to trigger a change
+  const { state, dispatch, actions } = useContext(AppStoreContext);
   const [display, setDisplay] = useState(true);
   const [zoomLevel, setZoomLevel] = useState('hour');
   const result = useFetchData('https://jsonplaceholder.typicode.com/users');
@@ -25,6 +28,10 @@ const GanttTL = () => {
       priority: 'high'
     });
   }, []);
+
+  const handleDispatch = () => {
+    actions.switchWorkspace(2);
+  };
 
   const handleEarlyEvent = () => {
     const task1 = gantt.getTask(1);
@@ -73,6 +80,7 @@ const GanttTL = () => {
           onToggleChart={handleToggleChart}
           onZoomChange={handleZoomChange}
           onEarlyEvent={handleEarlyEvent}
+          onDispatch={handleDispatch}
         />
       </div>
       <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
