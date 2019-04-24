@@ -2,7 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import { setZoomConfig } from './zoom-level';
 import { useInterval, useFetchData, useMarker } from './GanttHook';
+import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_quick_info';
+import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_tooltip';
 import './custom.css';
+
 /**
  * Keep all the config in GanttChart so that any changes to props/state,
  * would then trigger a re-render of the component
@@ -25,6 +28,15 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
 		]
   };
 
+  gantt.templates.tooltip_text = function (start, end, task) {
+    if (!gantt.config.show_chart) {
+      return "<b>Task:</b> " + task.text + "<br/>" +
+        "<b>Start date:</b> " +
+        gantt.templates.tooltip_date_format(start) +
+        "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end);
+    } else return ""
+  };
+
   // let gContainer = useRef();
   // Introduce delay state to allow dynamic change to the interval
   // const [delay] = useState(10000);
@@ -34,6 +46,7 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
   useEffect(() => {
     gantt.config.show_chart = display;
     gantt.config.sort = true;
+    gantt.config.show_quick_info = display;
 
     gantt.config.layout = {
       css: "gantt_container",
@@ -80,6 +93,7 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
 
   useEffect(() => {
     gantt.config.show_chart = display;
+    gantt.config.show_quick_info = display;
   }, [display]);
 
   useInterval(() => {
