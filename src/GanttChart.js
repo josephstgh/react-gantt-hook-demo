@@ -4,6 +4,7 @@ import { setZoomConfig } from './zoom-level';
 import { useInterval, useFetchData, useMarker } from './GanttHook';
 import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_quick_info';
 import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_tooltip';
+import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_marker';
 import './custom.css';
 
 /**
@@ -95,6 +96,10 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
     gantt.config.show_chart = display;
     gantt.config.show_quick_info = display;
   }, [display]);
+
+  useEffect(() => {
+    gantt.updateMarker(markerId);
+  });
 
   useInterval(() => {
     const newDate = new Date();

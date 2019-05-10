@@ -6,12 +6,14 @@ import { gantt } from 'dhtmlx-gantt';
 import { useFetchData, useInterval } from './GanttHook';
 import { AppStoreContext } from './context/AppStoreContext';
 import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
+// import 'dhtmlx-gantt/codebase/skins/dhtmlxgantt_material.css';
 import './custom.css';
+import TemporaryDrawer from './TemporaryDrawer';
 
 const GanttTL = () => {
   // Can use dispatch or actions to trigger a change
   const { state, dispatch, actions } = useContext(AppStoreContext);
-  const [display, setDisplay] = useState(true);
+  const [display, setDisplay] = useState(false);
   const [zoomLevel, setZoomLevel] = useState('hour');
   const result = useFetchData('https://jsonplaceholder.typicode.com/users');
 
@@ -20,11 +22,13 @@ const GanttTL = () => {
   }, []);
 
   const handleAddEvent = useCallback(() => {
+    const nDate = new Date();
+
     gantt.addTask({
       id: gantt.getTaskCount() + 1,
       text: 'Event',
-      start_date: '15-04-2019',
-      duration: 4,
+      start_date: nDate,
+      end_date: nDate,
       priority: 'high'
     });
   }, []);
@@ -74,6 +78,7 @@ const GanttTL = () => {
   // Below is rendered to the DOM
   return (
     <div>
+      <TemporaryDrawer />
       <div id="toolbar">
         <GanttToolbar
           onAddEvent={handleAddEvent}
@@ -81,6 +86,7 @@ const GanttTL = () => {
           onZoomChange={handleZoomChange}
           onEarlyEvent={handleEarlyEvent}
           onDispatch={handleDispatch}
+          onAddTask={handleAddEvent}
         />
       </div>
       <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
