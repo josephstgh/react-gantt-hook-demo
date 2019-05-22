@@ -116,4 +116,25 @@ const useMarker = () => {
   return markerId;
 };
 
-export { useInterval, useTogglePriority, useFetchData, useMarker };
+const useQuickInfo = () => {
+  useEffect(() => {
+    const event = gantt.attachEvent('onQuickInfo', () => {
+      if (gantt.config.show_chart) {
+        const quickInfo = document.getElementsByClassName("gantt_cal_quick_info")[0];
+        if (quickInfo) {
+          gantt.$grid.appendChild(quickInfo);
+          quickInfo.style.left = '0px';
+        }
+      }
+      return true;
+    });
+
+    // perform cleanup
+    return () => {
+      if (event) {
+        gantt.detachEvent(event);
+      }
+    };
+  });
+}
+export { useInterval, useTogglePriority, useFetchData, useMarker, useQuickInfo };

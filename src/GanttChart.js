@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { gantt } from 'dhtmlx-gantt';
 import { setZoomConfig } from './zoom-level';
-import { useInterval, useFetchData, useMarker } from './GanttHook';
+import { columns } from './column-config';
+import { useInterval, useFetchData, useMarker, useQuickInfo } from './GanttHook';
 import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_quick_info';
-import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_tooltip';
+// import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_tooltip';
 import 'dhtmlx-gantt/codebase/ext/dhtmlxgantt_marker';
 import './custom.css';
 
@@ -17,26 +18,28 @@ import './custom.css';
  */
 const GanttChart = React.memo(({ data, display, zoomLevel }) => {
   const markerId = useMarker();
+  useQuickInfo();
+  gantt.config.columns = columns;
 
-  const rightSideGridColumns = {
-		columns: [
-			{
-				name: "status", label: "Status", width: 30, align: "center", template: function (task) {
-					const progress = task.progress || 0;
-          return Math.floor(progress * 100) + "";
-				}
-			},
-		]
-  };
+  // const rightSideGridColumns = {
+	// 	columns: [
+	// 		{
+	// 			name: "status", label: "Status", width: 30, align: "center", template: function (task) {
+	// 				const progress = task.progress || 0;
+  //         return Math.floor(progress * 100) + "";
+	// 			}
+	// 		},
+	// 	]
+  // };
 
-  gantt.templates.tooltip_text = function (start, end, task) {
-    if (!gantt.config.show_chart) {
-      return "<b>Task:</b> " + task.text + "<br/>" +
-        "<b>Start date:</b> " +
-        gantt.templates.tooltip_date_format(start) +
-        "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end);
-    } else return ""
-  };
+  // gantt.templates.tooltip_text = function (start, end, task) {
+  //   if (!gantt.config.show_chart) {
+  //     return "<b>Task:</b> " + task.text + "<br/>" +
+  //       "<b>Start date:</b> " +
+  //       gantt.templates.tooltip_date_format(start) +
+  //       "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end);
+  //   } else return ""
+  // };
 
   // let gContainer = useRef();
   // Introduce delay state to allow dynamic change to the interval
@@ -47,7 +50,7 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
   useEffect(() => {
     gantt.config.show_chart = display;
     gantt.config.sort = true;
-    gantt.config.show_quick_info = display;
+    // gantt.config.show_quick_info = display;
 
     gantt.config.layout = {
       css: "gantt_container",
@@ -58,8 +61,8 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
             {resizer: true, width: 1},
             {view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer"},
             {resizer: true, width: 1},
-            {view: "grid", width: 50, bind: "task", scrollY: "scrollVer", config: rightSideGridColumns},
-            {view: "scrollbar", id: "scrollVer"}
+            // {view: "grid", width: 50, bind: "task", scrollY: "scrollVer", config: rightSideGridColumns},
+            // {view: "scrollbar", id: "scrollVer"}
           ]
         },
         {view: "scrollbar", id: "scrollHor", height: 20}
@@ -94,7 +97,7 @@ const GanttChart = React.memo(({ data, display, zoomLevel }) => {
 
   useEffect(() => {
     gantt.config.show_chart = display;
-    gantt.config.show_quick_info = display;
+    // gantt.config.show_quick_info = display;
   }, [display]);
 
   useEffect(() => {

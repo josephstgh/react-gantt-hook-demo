@@ -16,6 +16,7 @@ const GanttTL = () => {
   const [display, setDisplay] = useState(false);
   const [zoomLevel, setZoomLevel] = useState('hour');
   const result = useFetchData('https://jsonplaceholder.typicode.com/users');
+  const [ganttWidth, setGanttWidth] = useState('500px');
 
   const handleZoomChange = useCallback(zoom => {
     setZoomLevel(zoom);
@@ -62,6 +63,7 @@ const GanttTL = () => {
   // it will then cause GanttChart to re-render due to props change
   const handleToggleChart = useCallback(() => {
     setDisplay(!display);
+    setGanttWidth(display ? '500px': '100%');
   }, [display]);
 
   useEffect(() => {
@@ -89,7 +91,7 @@ const GanttTL = () => {
           onAddTask={handleAddEvent}
         />
       </div>
-      <div style={{ width: '100%', height: '100%', position: 'absolute' }}>
+      <div style={{ width: `${ganttWidth}`, height: '100%', position: 'absolute' }}>
         <GanttChart data={data} display={display} zoomLevel={zoomLevel} />
       </div>
     </div>
